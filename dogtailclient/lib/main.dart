@@ -1,6 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
+import 'datas/data_repository.dart';
+import 'models/book.dart';
+import 'models/chapter.dart';
 
-void main() => runApp(MyApp());
+final logger = Logger();
+Future<void> main() async {
+  // 确保Flutter绑定已初始化
+  WidgetsFlutterBinding.ensureInitialized();
+
+  String jsonString = await rootBundle.loadString('assets/test_data.json');
+  // 解析JSON数据
+  Map<String, dynamic> data = jsonDecode(jsonString);
+  // 从数据中提取书籍列表
+  List<dynamic> booksData = data['books'];
+  List<dynamic> chaptersData = data['chapters'];
+
+  DataRepository dataRepository = DataRepository();
+
+  // 将JSON数据转换为Book对象的列表
+  List<Book> books = booksData.map((json) => Book(
+    bookUuid: json['bookUuid'],
+    firstChapterUuid: json['firstChapterUuid'],
+    allChapterUuids: List<String>.from(json['allChapterUuids']),
+    bookInfo: json['bookInfo'],
+  )).toList();
+
+  // 打印书籍信息
+  books.forEach((book) {
+    dataRepository.addBook(book);
+  });
+  
+  // 将JSON数据转换为Chapter对象的列表
+  List<Chapter> chapters = chaptersData.map((json) => Chapter(
+    chapterUuid: json['chapterUuid'],
+    parentChapterUuid: json['parentChapterUuid'],
+    chapterInfo: json['chapterInfo'],
+    bookUuid: json['bookUuid'],
+    chapterContent: json['chapterContent'],
+    subChapterUuids: List<String>.from(json['subChapterUuids']),
+  )).toList();
+
+  // 打印章节信息
+  chapters.forEach((chapter) {
+    dataRepository.addChapter(chapter);
+  });
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override

@@ -1,0 +1,51 @@
+{
+  "books": [
+    {
+      "bookUuid": "book1",
+      "firstChapterUuid": "chapter1",
+      "allChapterUuids": ["chapter1", "chapter2", "chapter3"],
+      "bookInfo": "Book 1 Information"
+    },
+    {
+      "bookUuid": "book2",
+      "firstChapterUuid": "chapter4",
+      "allChapterUuids": ["chapter4", "chapter5", "chapter6"],
+      "bookInfo": "Book 2 Information"
+    }
+  ],
+
+  "chapters": [
+    {
+      "chapterUuid": "1",
+      "parentChapterUuid": "0",
+      "chapterInfo": "Chapter 1",
+      "bookUuid": "123",
+      "chapterContent": "This is chapter 1 content.",
+      "subChapterUuids": []
+    },
+    {
+      "chapterUuid": "2",
+      "parentChapterUuid": "0",
+      "chapterInfo": "Chapter 2",
+      "bookUuid": "123",
+      "chapterContent": "This is chapter 2 content.",
+      "subChapterUuids": ["21", "22"]
+    },
+    {
+      "chapterUuid": "21",
+      "parentChapterUuid": "2",
+      "chapterInfo": "Chapter 2.1",
+      "bookUuid": "123",
+      "chapterContent": "This is chapter 2.1 content.",
+      "subChapterUuids": []
+    },
+    {
+      "chapterUuid": "22",
+      "parentChapterUuid": "2",
+      "chapterInfo": "Chapter 2.2",
+      "bookUuid": "123",
+      "chapterContent": "This is chapter 2.2 content.",
+      "subChapterUuids": []
+    }
+  ]
+}
