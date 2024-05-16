@@ -5,6 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'datas/data_repository.dart';
 import 'models/book.dart';
 import 'models/chapter.dart';
+import 'views/book_detail_page.dart';
 
 final logger = Logger();
 Future<void> main() async {
@@ -126,11 +127,38 @@ class HomePage extends StatelessWidget {
 }
 
 class CategoryPage extends StatelessWidget {
+  final Map<String, List<String>> bookCategories = {
+  '科幻': ['book1', 'book2'],
+  '玄幻': ['book3', 'book4'],
+  '穿越': ['book5'],
+  };
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.green[50],
-      child: Center(child: Text('分类页面')),
+Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('分类'),
+      ),
+      body: ListView(
+        children: bookCategories.keys.map((category) {
+          return ExpansionTile(
+            title: Text(category),
+            children: bookCategories[category]!.map((bookUuid) {
+              final book = DataRepository().getBookByUuid(bookUuid);
+              return ListTile(
+                title: Text(book?.bookInfo ?? '未知书籍'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookDetailPage(book: book!),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 }
